@@ -47,6 +47,8 @@ var Goku = React.createClass({
         } else if (position === 1) {    // Delete
             console.log("cleaning up board");
             this.deletePuzzle();
+        } else if (position === 2) {
+            console.log("saving board");
         }
     },
 
@@ -137,11 +139,11 @@ var Goku = React.createClass({
     processPuzzle: async function(puzzle) {
         console.log("processing puzzle!");
 
-        // SudokuSolver.solve("4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......");
+        // } = await SudokuSolver.solve("4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......");
         try {
             var {
                 result,
-            } = await SudokuSolver.solve("4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......");
+            } = await SudokuSolver.solve(puzzle);
 
             console.log("result ready!");
             console.log(result);
@@ -162,6 +164,7 @@ const MaterialButton = new MKButton.Builder()
 var toolbarActions = [
     {title: 'Solve', icon: require('./app/assets/solve_icon.png'), show:'always'},
     {title: 'Delete', icon: require('./app/assets/delete_icon.png'), show:'always'},
+    {title: 'Save', icon: require('./app/assets/save_icon.png'), show:'always'},
 ];
 
 var styles = StyleSheet.create({
@@ -173,7 +176,7 @@ var styles = StyleSheet.create({
         backgroundColor: '#2196F3',
         height: 56,
         marginBottom: 15
-  },
+    },
     container: {
         alignSelf: 'center',
         width:320,
