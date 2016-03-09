@@ -1,5 +1,11 @@
-import SudokuSolver from './app/native/SolverAndroid'
-
+'use strict';
+import React, {
+  StyleSheet,
+  View,
+  Text,
+  TextInput
+} from 'react-native';
+import SudokuSolver from './native/SolverAndroid'
 
 var Goku = React.createClass({
 
