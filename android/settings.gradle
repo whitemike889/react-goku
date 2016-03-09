@@ -1,0 +1,3 @@
+rootProject.name = 'goku'
+
+include ':app', ':bridge'
