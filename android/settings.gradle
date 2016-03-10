@@ -3,3 +3,6 @@ rootProject.name = 'goku'
 include ':app'
 include ':RNMaterialKit'
 project (':RNMaterialKit').projectDir = file('../node_modules/react-native-material-kit/android')
+// realm dependency
+include ':realm'
+project(':realm').projectDir = new File(rootProject.projectDir, '../node_modules/realm/android')

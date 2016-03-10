@@ -126,4 +126,7 @@ dependencies {
     // From node_modules
     compile project(':RNMaterialKit')
     compile(name:'bridge', ext:'aar')
+
+    compile project(":realm")
+    compile fileTree(dir: "node_modules/realm/android/libs", include: ["*.jar"])
 }

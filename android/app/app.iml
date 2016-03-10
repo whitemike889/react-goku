@@ -102,6 +102,7 @@
     <orderEntry type="library" exported="" name="fresco-0.8.1" level="project" />
     <orderEntry type="library" exported="" name="imagepipeline-okhttp-0.8.1" level="project" />
     <orderEntry type="library" exported="" name="imagepipeline-0.8.1" level="project" />
+    <orderEntry type="library" exported="" name="nanohttpd-2.2.0" level="project" />
     <orderEntry type="library" exported="" name="bridge-" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="jsr305-3.0.0" level="project" />
@@ -122,5 +123,6 @@
     <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.0.1" level="project" />
     <orderEntry type="module" module-name="RNMaterialKit" exported="" />
+    <orderEntry type="module" module-name="realm" exported="" />
   </component>
 </module>
