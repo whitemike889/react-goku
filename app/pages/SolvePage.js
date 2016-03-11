@@ -13,6 +13,7 @@ import React, {
 import SudokuSolver from '../native/SolverAndroid'
 import util from '../utils/util'
 import GokuDB from '../db/GokuDB'
+
 var _ = require('lodash');
 
 var SolvePage = React.createClass({
@@ -138,7 +139,6 @@ var SolvePage = React.createClass({
             this.setState({
                 solved: true,
                 puzzleBoard: newBoard
-                // solved: util.convertPuzzle(newBoard)
             });
         } catch (e) {
             console.error(e);

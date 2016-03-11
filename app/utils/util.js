@@ -1,11 +1,12 @@
 'use strict';
+
 var _ = require('underscore');
 
 const util = {
 	/**
-	makeArray:
-		- creates an array that's of size length
-		- contains predefined value
+		makeArray:
+			- creates an array that's of size length
+			- contains predefined value
 	**/
 	makeArray: (length, value) => {
 		return _.map(_.range(length), function(val, key) {
@@ -14,8 +15,8 @@ const util = {
 	},
 
 	/**
-	makeGrid:
-		- makes an empty grid used as initial sate of Sudoku board
+		makeGrid:
+			- makes an empty grid used as initial sate of Sudoku board
 	**/
 	makeGrid: () => {
 		var grid = Array.apply(null, Array(9)).map(function() { return ''});
@@ -29,11 +30,11 @@ const util = {
 	},
 
 	/**
-	convertToGrid:  convert puzzleString to grid
-		example:
-		- convert:
-		"4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
-		=> grid[9][9] 2D-array 9x9
+		convertToGrid:  convert puzzleString to grid
+			example:
+			- convert:
+			"4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
+			=> grid[9][9] 2D-array 9x9
 	**/
 	convertToGrid: (puzzle) => {
 		var rows = [];
@@ -53,11 +54,11 @@ const util = {
 	},
 
 	/**
-	convertPuzzle:  convert grid to puzzleString
-		example:
-		- convert:
-		grid[9][9] 2D-array 9x9
-		=> "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
+		convertPuzzle:  convert grid to puzzleString
+			example:
+			- convert:
+			grid[9][9] 2D-array 9x9
+			=> "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
 	**/
 	convertPuzzle: (puzzleGrid) => {
 		var newPuzzle = puzzleGrid.map((square) => {
@@ -72,8 +73,8 @@ const util = {
 	},
 
 	/**
-	extractPuzzleInserts: retuns an array of blocks that were prefilled by the user
-	this is used to highlight what the user selected in the SavedPage
+		extractPuzzleInserts: retuns an array of blocks that were prefilled by the user
+		this is used to highlight what the user selected in the SavedPage
 	**/
 	extractPuzzleInserts: (puzzleGrid) => {
 		var inserts = [];
@@ -98,8 +99,8 @@ const util = {
 	},
 
 	/**
-	mergePuzzleViaInserts: create a board based on {board.presolved values}
-	keys inside board.presolved will be merged with {board.solved }
+		mergePuzzleViaInserts: create a board based on {board.presolved values}
+		keys inside board.presolved will be merged with {board.solved }
 	**/
 	mergePuzzleViaInserts: (presolved, solved) => {
 		var pKeys = presolved.split(',');

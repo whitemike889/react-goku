@@ -1,15 +1,16 @@
-
 'use strict';
+
 import React, {
     StyleSheet,
     StatusBar,
     View,
     ToastAndroid
 } from 'react-native';
+
 import SolvePage from './pages/SolvePage';
 import SavedPage from './pages/SavedPage';
-var ToolbarAndroid = require('ToolbarAndroid');
 
+var ToolbarAndroid = require('ToolbarAndroid');
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
 var Root = React.createClass({
@@ -80,7 +81,7 @@ var Root = React.createClass({
                 backgroundColor="#C2185B"
             />
             <ToolbarAndroid
-                title="Goku"
+                title="Go-ku"
                 style={styles.toolbar}
                 actions={toolbarActions}
                 onActionSelected={this._onActionSelected}

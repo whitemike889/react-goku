@@ -57,54 +57,6 @@ var SavedPage = React.createClass({
         );
     },
 
-    // _renderCuteBoard(board) {
-    //     console.log("cuteBoard: " + board.presolved);
-    //
-    //     var rows = [];
-    //     var blocks = [];
-    //     var puzzle = _.chunk([...board.solved], 9);
-    //     var userInserts = board.presolved.split(',');
-    //
-    //     puzzle.map((row) => {
-    //         var rowSeperator = ((rows.length == 2 || rows.length == 5)) ? true : false;
-    //
-    //         row.map((block) => {
-    //             var key = rows.length + "_" + blocks.length;
-    //
-    //             var isUserInsert = false;
-    //             userInserts.map((insertKey) => {
-    //                 if (insertKey == key) {
-    //                     isUserInsert = true;
-    //                     console.log(insertKey + " :: " + key + " :: found match");
-    //                 }
-    //             });
-    //             var blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
-    //
-    //             // console.log("block not null");
-    //             blocks.push(
-    //                 <View
-    //                     key={key}
-    //                     style={[
-    //                         styles.boardBlock,
-    //                         blockSeperator && styles.boardBlockSeperator,
-    //                         isUserInsert && styles.boardBlockSelected
-    //                     ]}
-    //                 >
-    //                     <Text style={styles.boardBlockText}>{block}</Text>
-    //                 </View>
-    //             );
-    //         });
-    //         rows.push(<View
-    //                         key={rows.length}
-    //                         style={[styles.boardRow, rowSeperator && styles.boardRowSeperator]}
-    //                     >
-    //                     {blocks}
-    //                     </View>);
-    //         blocks = [];
-    //     });
-    //     return (<View key={rows.length} style={styles.boardContainer}>{rows}</View>);
-    // },
-
     updateDataSource() {
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(GokuDB.getBoards()),
@@ -132,7 +84,6 @@ class BoardItem extends React.Component {
                 userInserts.map((insertKey) => {
                     if (insertKey == key) {
                         isUserInsert = true;
-                        console.log(insertKey + " :: " + key + " :: found match");
                     }
                 });
                 var blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
@@ -221,7 +172,7 @@ var styles = StyleSheet.create({
   boardBlock: {
       flex: 1,
       justifyContent: 'flex-start',
-      borderWidth: 5 / PixelRatio.get(),
+      borderWidth: 1 / PixelRatio.get(),
       height:20,
   },
   boardBlockSelected: {

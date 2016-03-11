@@ -9,6 +9,10 @@ import React, {
 
 var ToolbarAndroid = require('ToolbarAndroid');
 
+// TODO: Unfortunate this could not be used in conjunction with ScrollableTabView
+// like: renderTabBar={() => <GokuToolbar someProp={'here'} />
+// I don't have access to refs from SolvedPage and SavedPage
+// leave here for reference
 var GokuToolbar = React.createClass({
 	selectedTabIcons:   [],
   	unselectedTabIcons: [],
