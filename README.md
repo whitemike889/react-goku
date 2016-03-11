@@ -3,6 +3,7 @@ Go-ku: Mobile App built using React Native and Golang
 
 ![Go-ku Banner](https://cloud.githubusercontent.com/assets/6182543/13706057/835c3a46-e771-11e5-9c92-385b6c5c4cf8.png)
 
+link to [Google Play Store](https://play.google.com/store/apps/details?id=com.miguelespinoza.goku)
 ## Reason
 Curious about an Architecture to rule all mobile platforms! using **React Native** and **Golang**!
 
