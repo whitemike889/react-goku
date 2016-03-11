@@ -10,7 +10,7 @@ Curious about an Architecture to rule all mobile platforms! using **React Native
 
 ## Architecture
 * **UI Layer:** [React Native](https://facebook.github.io/react-native/)
-* **Logic Layer:** [Go mobile](https://godoc.org/golang.org/x/mobile/cmd/gomobile)
+* **Logic Layer:** [Go mobile](https://godoc.org/golang.org/x/mobile/cmd/gomobile) using [goku lib](https://github.com/miguelespinoza/goku)
 * **Persistence Layer** [Realm DB](https://realm.io/docs/react-native/latest/)
 
 ## Screenshots
