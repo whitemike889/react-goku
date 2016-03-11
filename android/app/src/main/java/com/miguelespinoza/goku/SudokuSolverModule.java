@@ -1,4 +1,4 @@
-package com.goku;
+package com.miguelespinoza.goku;
 
 import android.util.Log;
 

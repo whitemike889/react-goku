@@ -1,4 +1,4 @@
-package com.goku;
+package com.miguelespinoza.goku;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;

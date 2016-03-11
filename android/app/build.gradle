@@ -74,14 +74,14 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.goku"
+        applicationId "com.miguelespinoza.goku"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
@@ -90,6 +90,15 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+    signingConfigs {
+        release {
+            storeFile file("goku-android-key.keystore")
+            storePassword "password"
+            keyAlias "goku-key"
+            keyPassword "password"
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -101,6 +110,7 @@ android {
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
