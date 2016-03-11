@@ -2,6 +2,7 @@
 import React, {
   AppRegistry,
   StyleSheet,
+  PixelRatio,
   ScrollView,
   View,
   Text
@@ -36,16 +37,66 @@ var SavedPage = React.createClass({
     _renderRow(item, sectionID, rowID) {
         console.log(item);
         return (
-            <View>
-                <Text>
-                    {rowID}
-                </Text>
-                <Text>
-                    {item.solved}
-                </Text>
+            <View style={styles.itemRow}>
+                <View style={styles.circle}>
+                    <Text style={styles.itemRowID}>
+                        {rowID+1}
+                    </Text>
+                </View>
+                <View style={styles.boardContent}>
+                    {this._renderCuteBoard(item)}
+                </View>
             </View>
         );
     },
+
+    _renderCuteBoard(board) {
+        console.log("cuteBoard: " + board.presolved);
+        // return (
+        //     <Text>
+        //         {board.solved}
+        //     </Text>
+        // );
+        var rows = [];
+        var blocks = [];
+        var puzzle = _.chunk([...board.solved], 9);
+        var userInserts = board.presolved.split(',');
+
+        puzzle.map((row) => {
+            var rowSeperator = ((rows.length == 2 || rows.length == 5)) ? true : false;
+
+            row.map((block) => {
+                var key = rows.length + "_" + blocks.length;
+
+                var isUserInsert = false;
+                userInserts.map((insertKey) => {
+                    if (insertKey == key) {
+                        isUserInsert = true;
+                        console.log(insertKey + " :: " + key + " :: found match");
+                    }
+                });
+                var blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
+
+                // console.log("block not null");
+                blocks.push(
+                    <View
+                        key={key}
+                        style={[
+                            styles.boardBlock,
+                            blockSeperator && styles.boardBlockSeperator,
+                            isUserInsert && styles.boardBlockSelected
+                        ]}
+                    >
+                        <Text style={styles.boardBlockText}>{block}</Text>
+                    </View>
+                );
+            });
+            rows.push(<View key={rows.length} style={[styles.boardRow, rowSeperator && styles.boardRowSeperator]}>{blocks}</View>);
+            blocks = [];
+        });
+        return (<View key={rows.length} style={styles.boardContainer}>{rows}</View>);
+    },
+
     updateDataSource() {
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(GokuDB.getBoards()),
@@ -60,7 +111,67 @@ var styles = StyleSheet.create({
         padding: 0
     },
     listview: {
-    }
+    },
+    itemRow: {
+        flexDirection:'row',
+        paddingLeft:16,
+        paddingTop:10,
+        paddingBottom:10,
+    },
+    itemRowID: {
+        color: 'white',
+        fontSize: 32,
+        fontWeight: 'bold',
+        flexDirection:'row',
+        textAlign:'center',
+    },
+    circle: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#7C4DFF',
+        marginTop:32,
+  },
+  boardContent: {
+      flex:1,
+      paddingLeft:32,
+  },
+  boardContainer: {
+      flex:1,
+      width:200,
+      borderWidth: 3,
+      borderTopWidth: 2,
+      borderBottomWidth: 2
+  },
+  boardRow: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+  },
+  boardRowSeperator: {
+      borderBottomWidth: 3
+  },
+  boardBlock: {
+      flex: 1,
+      justifyContent: 'flex-start',
+      borderWidth: 1 / PixelRatio.get(),
+      height:20,
+  },
+  boardBlockSelected: {
+      flex: 1,
+      justifyContent: 'flex-start',
+      borderWidth: 1 / PixelRatio.get(),
+      height:20,
+      backgroundColor: '#B39DDB',
+  },
+  boardBlockSeperator: {
+      borderRightWidth: 2
+  },
+  boardBlockText: {
+      fontSize: 10,
+      paddingTop: 8,
+      alignSelf: 'center'
+  },
 });
 
 module.exports = SavedPage;

@@ -93,6 +93,7 @@ var SolvePage = React.createClass({
         return layout;
     },
 
+    // convertPuzzle: converts puzzleBoard to a format that the Go lib (Goku) understands
     convertPuzzle() {
         var newPuzzle = util.convertPuzzle(_.flatten(this.state.puzzleBoard));
 
@@ -102,10 +103,7 @@ var SolvePage = React.createClass({
 
     processPuzzle: async function(puzzle) {
         console.log("processing puzzle!");
-
-        this.setState({
-            presolved: puzzle
-        });
+        
         // } = await SudokuSolver.solve("4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......");
         try {
             var {
@@ -115,6 +113,12 @@ var SolvePage = React.createClass({
             console.log("result ready!");
             console.log(result);
             console.log([...result]);
+
+            var presolved = util.extractPuzzleInserts(this.state.puzzleBoard)
+            this.setState({ // array of all keys
+                presolved: presolved
+            });
+
             var newBoard = util.convertToGrid(_.chunk([...result], 9));
             this.setState({
                 puzzleBoard: newBoard

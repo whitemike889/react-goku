@@ -69,6 +69,28 @@ const util = {
 		});
 
 		return newPuzzle.join("");
+	},
+
+	extractPuzzleInserts: (puzzleGrid) => {
+		var inserts = [];
+		var rows = 0;
+		var blocks = 0;
+
+		puzzleGrid.map((row) => {
+			row.map((block) => {
+				if (block == '') {
+					blocks++;
+					return;
+				}
+
+				inserts.push(rows + "_" + blocks);
+				blocks++;
+			});
+			rows++;
+			blocks = 0;
+		});
+
+		return inserts.join();
 	}
 }
 

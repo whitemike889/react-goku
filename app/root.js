@@ -1,3 +1,5 @@
+
+'use strict';
 import React, {
     StyleSheet,
     StatusBar,
@@ -18,6 +20,11 @@ const {
 const MaterialButton = new MKButton.Builder()
 
 var Root = React.createClass({
+    getInitialState() {
+        return {
+            toggleActions: false,   // true => showToolbarOptions
+        }
+    },
 
     _onActionSelected(position) {
         if (position === 0) {   // Solve
@@ -44,6 +51,10 @@ var Root = React.createClass({
         this.refs.solvePage.savePuzzle(() => {
             this.refs.savedPage.updateDataSource();
         });
+    },
+
+    _toggleToolbarAction(tab) {
+
     },
 
   render() {
@@ -85,6 +96,8 @@ var toolbarActions = [
     {title: 'Delete', icon: require('./assets/delete_icon.png'), show:'always'},
     {title: 'Save', icon: require('./assets/save_icon.png'), show:'always'},
 ];
+
+var toolbarEmptyActions = [];
 
 const styles = StyleSheet.create({
   container: {
