@@ -71,6 +71,10 @@ const util = {
 		return newPuzzle.join("");
 	},
 
+	/**
+	extractPuzzleInserts: retuns an array of blocks that were prefilled by the user
+	this is used to highlight what the user selected in the SavedPage
+	**/
 	extractPuzzleInserts: (puzzleGrid) => {
 		var inserts = [];
 		var rows = 0;
@@ -91,6 +95,41 @@ const util = {
 		});
 
 		return inserts.join();
+	},
+
+	/**
+	mergePuzzleViaInserts: create a board based on {board.presolved values}
+	keys inside board.presolved will be merged with {board.solved }
+	**/
+	mergePuzzleViaInserts: (presolved, solved) => {
+		var pKeys = presolved.split(',');
+		var puzzle = util.convertToGrid(solved);
+
+		var rows = 0;
+		var blocks = 0;
+		// TODO: avoid this by manipulating puzzle, not familiar with how to do this in JS.. maybe use Rx.JS for transformation?
+		var grid = util.makeGrid();
+
+	 	puzzle.map((row) => {
+			row.map((block) => {
+
+				var userInsert = false;
+				var val = rows + "_" + blocks;
+				pKeys.map((key) => {
+					if (key == val) {
+						userInsert = true;
+					}
+				});
+
+				grid[rows][blocks] = (userInsert) ? block : '';
+
+				blocks++;
+			});
+			rows++;
+			blocks = 0;
+		});
+
+		return grid;
 	}
 }
 

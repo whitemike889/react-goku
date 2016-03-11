@@ -3,21 +3,14 @@
 import React, {
     StyleSheet,
     StatusBar,
-    View
+    View,
+    ToastAndroid
 } from 'react-native';
 import SolvePage from './pages/SolvePage';
 import SavedPage from './pages/SavedPage';
 var ToolbarAndroid = require('ToolbarAndroid');
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
-const MK = require('react-native-material-kit');
-
-const {
-    MKButton,
-    MKColor,
-} = MK;
-
-const MaterialButton = new MKButton.Builder()
 
 var Root = React.createClass({
     getInitialState() {
@@ -48,20 +41,43 @@ var Root = React.createClass({
     },
 
     _onSave() {
-        this.refs.solvePage.savePuzzle(() => {
-            this.refs.savedPage.updateDataSource();
-        });
+        if (this.refs.solvePage.isSolved()) {
+            this.refs.solvePage.savePuzzle(() => {
+                this.refs.savedPage.updateDataSource();
+            });
+            return;
+        }
+
+        if (this.refs.solvePage.isCleared()) {
+            console.log("Puzzle is not complete.");
+            ToastAndroid.show('Puzzle is not complete.', ToastAndroid.SHORT);
+            return;
+        }
+
+        console.log("Must solve puzzle before saving.");
+        ToastAndroid.show('Must solve puzzle before saving.', ToastAndroid.SHORT);
+
+    },
+
+    _onItemSelected(board, id) {
+        this.refs.tab.goToPage(0);
+        console.log("loading puzzle: ");
+        this.refs.solvePage.loadPuzzle(board);
     },
 
     _toggleToolbarAction(tab) {
-
+        // TODO:
+        // you can't toggle.. unless it's connected to ScrollableTabView
+        // and used activeTab property
+        // http://stackoverflow.com/questions/33411590/how-to-render-actions-in-toolbarandroid-for-react-native
+        // but you sacrifice having reference to SolvePage and SavedPage :( I might be overlooking something..
     },
 
   render() {
     return (
         <View style={styles.container}>
             <StatusBar
-                backgroundColor="#1976D2"
+                backgroundColor="#C2185B"
             />
             <ToolbarAndroid
                 title="Goku"
@@ -72,7 +88,8 @@ var Root = React.createClass({
             />
 
           <ScrollableTabView
-            tabBarBackgroundColor='#2196F3'
+            ref={'tab'}
+            tabBarBackgroundColor='#E91E63'
             tabBarActiveTextColor='#FFFFFF'
             tabBarInactiveTextColor='#212121'
             tabBarUnderlineColor='#FFFFFF'
@@ -84,6 +101,7 @@ var Root = React.createClass({
             <SavedPage
                 ref={'savedPage'}
                 tabLabel="SAVED"
+                onPressItem={this._onItemSelected}
             />
           </ScrollableTabView>
         </View>
@@ -104,7 +122,7 @@ const styles = StyleSheet.create({
     flex: 1
 },
   toolbar: {
-      backgroundColor: '#2196F3',
+      backgroundColor: '#E91E63',
       height: 56
   }
 });

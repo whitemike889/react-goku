@@ -6,7 +6,8 @@ import React, {
   PixelRatio,
   View,
   Text,
-  TextInput
+  TextInput,
+  ToastAndroid
 } from 'react-native';
 
 import SudokuSolver from '../native/SolverAndroid'
@@ -22,11 +23,16 @@ var SolvePage = React.createClass({
             // puzzleBoard: contains solved state
             // reacts to blocks in sudoku grid based on [row][block].length
             puzzleBoard: util.makeGrid(),
-            presolved: '' // contains presolved state
+            presolved: '', // contains presolved state
+            solved: false,
+            cleared: true
         }
     },
 
     _onInput(key, input) {
+        this.setState({
+            cleared: false
+        });
         var gridpoint = key.split('_');
         var x = gridpoint[0];
         var y = gridpoint[1];
@@ -52,7 +58,8 @@ var SolvePage = React.createClass({
                         <View key={key} style={[styles.block, blockSeperator && styles.blockSeperator]}>
                               <TextInput
                                 clearTextOnFocus={true}
-                                keyboardType={'number-pad'}
+                                keyboardType={'numeric'}
+                                maxLength={1}
                                 style={[styles.textInput, this.state.active && styles.textInputSelected]}
                                 onFocus={() =>
                                     this.setState({
@@ -101,9 +108,17 @@ var SolvePage = React.createClass({
         this.processPuzzle(newPuzzle);
     },
 
+    isSolved() {
+        return this.state.solved;
+    },
+
+    isCleared() {
+        return this.state.cleared;
+    },
+
     processPuzzle: async function(puzzle) {
         console.log("processing puzzle!");
-        
+
         // } = await SudokuSolver.solve("4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......");
         try {
             var {
@@ -121,23 +136,38 @@ var SolvePage = React.createClass({
 
             var newBoard = util.convertToGrid(_.chunk([...result], 9));
             this.setState({
+                solved: true,
                 puzzleBoard: newBoard
                 // solved: util.convertPuzzle(newBoard)
             });
         } catch (e) {
             console.error(e);
+            ToastAndroid.show('Puzzle is unsolvable.', ToastAndroid.SHORT);
         }
+    },
+
+    loadPuzzle(board) {
+        var mergedPuzzle = util.mergePuzzleViaInserts(board.presolved, _.chunk([...board.solved], 9));
+
+        this.setState({
+            puzzleBoard: mergedPuzzle
+        });
     },
 
     deletePuzzle() {
         var cleanBoard = util.makeGrid();
 
         this.setState({
+            cleared: true,
             puzzleBoard: cleanBoard
         });
     },
 
     savePuzzle(saveCallback) {
+        this.setState({
+            solved: false
+        });
+
         console.log("SolvePage saving puzzle");
         GokuDB.saveBoard(this.state.presolved, util.convertPuzzle(_.flatten(this.state.puzzleBoard)));
         saveCallback();
@@ -159,7 +189,7 @@ var styles = StyleSheet.create({
     row: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     rowSeperator: {
         borderBottomWidth: 3
@@ -175,17 +205,17 @@ var styles = StyleSheet.create({
         paddingBottom: 2,
         paddingLeft: 10,
         height: 40,
-        fontSize: 25,
-        backgroundColor: '#BBDEFB'
+        fontSize: 25
+        // backgroundColor: '#BBDEFB'
     },
     block: {
         flex: 1,
         justifyContent: 'flex-start',
-        borderWidth: 1 / PixelRatio.get(),
-        height:40,
+        borderWidth: 1,
+        height:40
     },
     blockSeperator: {
-        borderRightWidth: 2
+        borderRightWidth: 3
     },
     blockText: {
         fontSize: 25,

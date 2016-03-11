@@ -4,6 +4,7 @@ import React, {
   StyleSheet,
   PixelRatio,
   ScrollView,
+  TouchableOpacity,
   View,
   Text
 } from 'react-native';
@@ -34,29 +35,88 @@ var SavedPage = React.createClass({
         );
     },
 
-    _renderRow(item, sectionID, rowID) {
-        console.log(item);
+    _onBoardClicked(board) {
+        console.log("onBoardClicked: " + board.solved);
+    },
+
+    _renderRow(rowData, sectionID, rowID) {
+        console.log(rowData);
         return (
             <View style={styles.itemRow}>
-                <View style={styles.circle}>
+                <View
+                    style={styles.circle}>
                     <Text style={styles.itemRowID}>
                         {rowID+1}
                     </Text>
                 </View>
-                <View style={styles.boardContent}>
-                    {this._renderCuteBoard(item)}
-                </View>
+
+                <BoardItem
+                    item={rowData}
+                    onPress={() => this.props.onPressItem(rowData, rowID)} />
             </View>
         );
     },
 
-    _renderCuteBoard(board) {
-        console.log("cuteBoard: " + board.presolved);
-        // return (
-        //     <Text>
-        //         {board.solved}
-        //     </Text>
-        // );
+    // _renderCuteBoard(board) {
+    //     console.log("cuteBoard: " + board.presolved);
+    //
+    //     var rows = [];
+    //     var blocks = [];
+    //     var puzzle = _.chunk([...board.solved], 9);
+    //     var userInserts = board.presolved.split(',');
+    //
+    //     puzzle.map((row) => {
+    //         var rowSeperator = ((rows.length == 2 || rows.length == 5)) ? true : false;
+    //
+    //         row.map((block) => {
+    //             var key = rows.length + "_" + blocks.length;
+    //
+    //             var isUserInsert = false;
+    //             userInserts.map((insertKey) => {
+    //                 if (insertKey == key) {
+    //                     isUserInsert = true;
+    //                     console.log(insertKey + " :: " + key + " :: found match");
+    //                 }
+    //             });
+    //             var blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
+    //
+    //             // console.log("block not null");
+    //             blocks.push(
+    //                 <View
+    //                     key={key}
+    //                     style={[
+    //                         styles.boardBlock,
+    //                         blockSeperator && styles.boardBlockSeperator,
+    //                         isUserInsert && styles.boardBlockSelected
+    //                     ]}
+    //                 >
+    //                     <Text style={styles.boardBlockText}>{block}</Text>
+    //                 </View>
+    //             );
+    //         });
+    //         rows.push(<View
+    //                         key={rows.length}
+    //                         style={[styles.boardRow, rowSeperator && styles.boardRowSeperator]}
+    //                     >
+    //                     {blocks}
+    //                     </View>);
+    //         blocks = [];
+    //     });
+    //     return (<View key={rows.length} style={styles.boardContainer}>{rows}</View>);
+    // },
+
+    updateDataSource() {
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(GokuDB.getBoards()),
+        });
+    }
+});
+
+
+class BoardItem extends React.Component {
+    render() {
+        var board = this.props.item;
+
         var rows = [];
         var blocks = [];
         var puzzle = _.chunk([...board.solved], 9);
@@ -91,18 +151,25 @@ var SavedPage = React.createClass({
                     </View>
                 );
             });
-            rows.push(<View key={rows.length} style={[styles.boardRow, rowSeperator && styles.boardRowSeperator]}>{blocks}</View>);
+            rows.push(<View
+                            key={rows.length}
+                            style={[styles.boardRow, rowSeperator && styles.boardRowSeperator]}
+                        >
+                        {blocks}
+                        </View>);
             blocks = [];
         });
-        return (<View key={rows.length} style={styles.boardContainer}>{rows}</View>);
-    },
-
-    updateDataSource() {
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(GokuDB.getBoards()),
-        });
+        return (<TouchableOpacity
+                    onPress={this.props.onPress}
+                    style={styles.boardContent}>
+                    <View
+                        key={rows.length}
+                        style={styles.boardContainer}>
+                            {rows}
+                    </View>
+                </TouchableOpacity>);
     }
-});
+}
 
 var styles = StyleSheet.create({
     // For the container View
@@ -129,7 +196,7 @@ var styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 25,
-        backgroundColor: '#7C4DFF',
+        backgroundColor: '#03A9F4',
         marginTop:32,
   },
   boardContent: {
@@ -154,7 +221,7 @@ var styles = StyleSheet.create({
   boardBlock: {
       flex: 1,
       justifyContent: 'flex-start',
-      borderWidth: 1 / PixelRatio.get(),
+      borderWidth: 5 / PixelRatio.get(),
       height:20,
   },
   boardBlockSelected: {
@@ -162,7 +229,7 @@ var styles = StyleSheet.create({
       justifyContent: 'flex-start',
       borderWidth: 1 / PixelRatio.get(),
       height:20,
-      backgroundColor: '#B39DDB',
+      backgroundColor: '#81D4FA',
   },
   boardBlockSeperator: {
       borderRightWidth: 2
