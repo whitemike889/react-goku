@@ -27,6 +27,36 @@ Curious about an Architecture to rule all mobile platforms! using **React Native
 ![Go-ku Selected](https://cloud.githubusercontent.com/assets/6182543/13706013/5b7f7c36-e771-11e5-968e-acc0099aad00.png)
 ![Go-ku Loaded](https://cloud.githubusercontent.com/assets/6182543/13706267/69b133a2-e772-11e5-950e-e270b6de4a8c.png)
 
+### Development Tips:
+As of now only works for Android, have not tested on iOS
+* any one happy to contribute and build for iOS, I'm happy to receive Pull Request! :)
+
+### Run from source:
+Dependencies: [react-native for android](https://facebook.github.io/react-native/docs/getting-started.html#content)
+
+1. clone this repo
+2. $ cd react-goku
+3. $ npm install
+4. $ react-native run-android
+
+### Using/Updating Golang:
+Dependencies: [gomobile](https://godoc.org/golang.org/x/mobile/cmd/gomobile)
+
+1. clone [goku package](https://github.com/miguelespinoza/goku)
+2. $ cd goku
+2. $ gomobile bind -target android -o bridge.aar -v ./bridge
+3. Import .aar file using Android Studio:
+	* [steps](http://imgur.com/a/dEewm)
+	* thanks to [Sajal Kayan!](http://www.sajalkayan.com/post/android-apps-golang.html)
+4. Notice bridge.go, that's the proxy function used in order to communicate between Java and Go in Android.
+	* Limited types are supported using gomobile
+
+### Into React Native World:
+1. Create a class that extends ReactPackage, [check this](https://github.com/miguelespinoza/react-goku/blob/master/android/app/src/main/java/com/miguelespinoza/goku/GokuReactPackage.java)
+2. Pass the class in the getPackage function inside your [MainActivity class](https://github.com/miguelespinoza/react-goku/blob/master/android/app/src/main/java/com/miguelespinoza/goku/MainActivity.java#L41)
+3. This allows you to expose that class using [NativeModules](https://github.com/miguelespinoza/react-goku/blob/master/app/native/SolverAndroid.js)
+4. Profit! use that function wherever you want!
+
 ## TODO:
 * input from buttons, not OS keyboard
 * deleting sudoku boards
