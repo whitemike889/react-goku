@@ -53,11 +53,11 @@ Dependencies: [gomobile](https://godoc.org/golang.org/x/mobile/cmd/gomobile)
 
 ### Into React Native World:
 Using Go package:
-
-1. Create a class that extends ReactPackage, [check this](https://github.com/miguelespinoza/react-goku/blob/master/android/app/src/main/java/com/miguelespinoza/goku/GokuReactPackage.java)
-2. Pass the class in the getPackage function inside your [MainActivity class](https://github.com/miguelespinoza/react-goku/blob/master/android/app/src/main/java/com/miguelespinoza/goku/MainActivity.java#L41)
-3. This allows you to expose that class using [NativeModules](https://github.com/miguelespinoza/react-goku/blob/master/app/native/SolverAndroid.js)
-4. Profit! use that function wherever you want!
+1. Create a class that extends ReactContextBaseJavaModule, and create a method using the @ReactMethod annotation, you can use Bridge.java to call the Go proxy function [check this](https://github.com/miguelespinoza/react-goku/blob/master/android/app/src/main/java/com/miguelespinoza/goku/SudokuSolverModule.java#L30-L42)
+2. Create a class that extends ReactPackage, [check this](https://github.com/miguelespinoza/react-goku/blob/master/android/app/src/main/java/com/miguelespinoza/goku/GokuReactPackage.java)
+3. Pass the class in the getPackage function inside your [MainActivity class](https://github.com/miguelespinoza/react-goku/blob/master/android/app/src/main/java/com/miguelespinoza/goku/MainActivity.java#L41)
+4. This allows you to expose that class using [NativeModules](https://github.com/miguelespinoza/react-goku/blob/master/app/native/SolverAndroid.js)
+5. Profit! use that function wherever you want!
 
 ## TODO:
 * input from buttons, not OS keyboard
