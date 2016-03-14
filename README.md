@@ -27,7 +27,7 @@ Curious about an Architecture to rule all mobile platforms! using **React Native
 ![Go-ku Selected](https://cloud.githubusercontent.com/assets/6182543/13706013/5b7f7c36-e771-11e5-968e-acc0099aad00.png)
 ![Go-ku Loaded](https://cloud.githubusercontent.com/assets/6182543/13706267/69b133a2-e772-11e5-950e-e270b6de4a8c.png)
 
-### Development Tips:
+## Development Tips:
 As of now only works for Android, have not tested on iOS
 * any one happy to contribute and build for iOS, I'm happy to receive Pull Request! :)
 
