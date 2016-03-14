@@ -29,13 +29,9 @@ public class SudokuSolverModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void solve(String puzzle, Promise promise) {
-//        Toast.makeText(getReactApplicationContext(), puzzle, Toast.LENGTH_SHORT).show();
-
         try {
             String result = Bridge.Solve(puzzle);
-
             WritableMap map = Arguments.createMap();
-
             map.putString("result", result);
 
             promise.resolve(map);

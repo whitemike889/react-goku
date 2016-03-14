@@ -52,6 +52,8 @@ Dependencies: [gomobile](https://godoc.org/golang.org/x/mobile/cmd/gomobile)
 	* Limited types are supported using gomobile
 
 ### Into React Native World:
+Using Go package:
+
 1. Create a class that extends ReactPackage, [check this](https://github.com/miguelespinoza/react-goku/blob/master/android/app/src/main/java/com/miguelespinoza/goku/GokuReactPackage.java)
 2. Pass the class in the getPackage function inside your [MainActivity class](https://github.com/miguelespinoza/react-goku/blob/master/android/app/src/main/java/com/miguelespinoza/goku/MainActivity.java#L41)
 3. This allows you to expose that class using [NativeModules](https://github.com/miguelespinoza/react-goku/blob/master/app/native/SolverAndroid.js)
