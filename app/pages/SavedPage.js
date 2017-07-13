@@ -13,6 +13,8 @@ import {
 import { ListView } from 'realm/react-native';
 import GokuDB from '../db/GokuDB'
 
+var _ = require('lodash');
+
 var SavedPage = React.createClass({
 
     getInitialState() {

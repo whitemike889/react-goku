@@ -125,6 +125,13 @@ var SolvePage = React.createClass({
                     </TextInput>
                   </View>
                 );
+              } else {
+                console.log("block not null");
+                blocks.push(
+                  <View key={key} style={[styles.block, blockSeperator && styles.blockSeperator]}>
+                    <Text style={styles.blockText}>{block}</Text>
+                  </View>
+                );
               }
             });
 
