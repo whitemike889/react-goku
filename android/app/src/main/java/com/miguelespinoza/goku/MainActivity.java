@@ -1,14 +1,7 @@
 package com.miguelespinoza.goku;
 
 import com.facebook.react.ReactActivity;
-import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
-import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 
-import java.util.Arrays;
-import java.util.List;
-
-import io.realm.react.RealmReactPackage;
 
 public class MainActivity extends ReactActivity {
 

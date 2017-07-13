@@ -1,6 +1,6 @@
 'use strict';
-
-import React, {
+import React from 'react';
+import {
   AppRegistry,
   StyleSheet,
   PixelRatio,
@@ -26,7 +26,8 @@ var SolvePage = React.createClass({
             puzzleBoard: util.makeGrid(),
             presolved: '', // contains presolved state
             solved: false,
-            cleared: true
+            cleared: true,
+          debug: 'Hello World'
         }
     },
 
@@ -42,59 +43,104 @@ var SolvePage = React.createClass({
         console.log("key: " + key + "input: " + input);
       },
 
-    drawBoard() {
+    // drawBoard() {
+    //     var rows = [];
+    //     var blocks = [];
+    //     var puzzle = _.chunk(this.state.initPuzzle, 9);
+    //
+    //     console.log('puzzle', puzzle);
+    //   // this.setState({debug: puzzle});
+    //     puzzle.map((row) => {
+    //         var rowSeperator = ((rows.length == 2 || rows.length == 5)) ? true : false;
+    //
+    //
+    //         row.map((block) => {
+    //             var key = rows.length + "_" + blocks.length;
+    //             var blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
+    //
+    //             if (block === null) {
+    //                 blocks.push(
+    //                     <View key={key} style={[styles.block]}>
+    //                           <TextInput
+    //                             clearTextOnFocus={true}
+    //                             keyboardType={'numeric'}
+    //                             maxLength={1}
+    //                             style={[styles.textInput, this.state.active && styles.textInputSelected]}
+    //                             onFocus={() =>
+    //                               this.setState({
+    //                                 active: true
+    //                               })
+    //                             }
+    //                             onChangeText={(input) => this._onInput(key, input)}
+    //                           >
+    //                           {this.state.puzzleBoard[rows.length][blocks.length]}
+    //                           </TextInput>
+    //                     </View>
+    //                 );
+    //             } else {
+    //                 console.log("block not null");
+    //                 blocks.push(
+    //                     <View key={key} style={[styles.block, blockSeperator && styles.blockSeperator]}>
+    //                         <Text style={styles.blockText}>{block}</Text>
+    //                     </View>
+    //                 );
+    //             }
+    //         });
+    //         rows.push(<View key={rows.length} style={[styles.row]}>{blocks}</View>);
+    //         blocks = [];
+    //     });
+    //     console.log('rows', rows);
+    //     return (<View key={rows.length} style={styles.container}>{rows}</View>);
+    // },
+
+  drawBoard() {
         var rows = [];
         var blocks = [];
         var puzzle = _.chunk(this.state.initPuzzle, 9);
 
+        console.log('puzzle', puzzle);
+
         puzzle.map((row) => {
-            var rowSeperator = ((rows.length == 2 || rows.length == 5)) ? true : false;
-
             row.map((block) => {
-                var key = rows.length + "_" + blocks.length;
-                var blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
-
-                if (block === null) {
-                    blocks.push(
-                        <View key={key} style={[styles.block, blockSeperator && styles.blockSeperator]}>
-                              <TextInput
-                                clearTextOnFocus={true}
-                                keyboardType={'numeric'}
-                                maxLength={1}
-                                style={[styles.textInput, this.state.active && styles.textInputSelected]}
-                                onFocus={() =>
-                                    this.setState({
-                                        active: true
-                                    })
-                                }
-                                onChangeText={(input) => this._onInput(key, input)}
-                              >
-                              {this.state.puzzleBoard[rows.length][blocks.length]}
-                              </TextInput>
-                        </View>
-                    );
-                } else {
-                    console.log("block not null");
-                    blocks.push(
-                        <View key={key} style={[styles.block, blockSeperator && styles.blockSeperator]}>
-                            <Text style={styles.blockText}>{block}</Text>
-                        </View>
-                    );
-                }
+              const key = rows.length + "_" + blocks.length;
+              const blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
+              if (block === null) {
+                const blockSep = blockSeperator ? <Text>|</Text> : null;
+                blocks.push(
+                  <View key={key} style={{width: 40, height: 40, borderWidth: 1, borderColor: 'red'}}>
+                    <TextInput
+                      clearTextOnFocus={true}
+                      keyboardType={'numeric'}
+                      maxLength={1}
+                      underlineColorAndroid='transparent'
+                      style={[styles.textInput, this.state.active && styles.textInputSelected]}
+                      onFocus={() =>
+                        this.setState({
+                          active: true
+                        })
+                      }
+                      onChangeText={(input) => this._onInput(key, input)}
+                    >
+                      {this.state.puzzleBoard[rows.length][blocks.length]}
+                    </TextInput>
+                  </View>
+                );
+              }
             });
-            rows.push(<View key={rows.length} style={[styles.row, rowSeperator && styles.rowSeperator]}>{blocks}</View>);
+
+            rows.push(<View key={rows.length} style={{flexDirection: 'row', borderWidth: 2, borderColor: 'green'}}>{blocks}</View>);
             blocks = [];
         });
-        return (<View key={rows.length} style={styles.container}>{rows}</View>);
-    },
+
+        return <View style={{flexDirection: 'column', alignSelf: 'center'}}>{rows}</View>;
+  },
 
     render() {
         var layout =
             <View style = {styles.parent} >
-                <View style={styles.container}>
-                    {this.drawBoard()}
-                </View>
-
+              <Text>
+              </Text>
+              {this.drawBoard()}
             </View>
         ;
 
@@ -177,20 +223,23 @@ var SolvePage = React.createClass({
 var styles = StyleSheet.create({
     // For the container View
     parent: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: 'red',
         paddingTop:16
     },
-    container: {
-        alignSelf: 'center',
-        width:320,
-        borderWidth: 3,
-        borderTopWidth: 2,
-        borderBottomWidth: 2
-    },
-    row: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
+  container: {
+    alignSelf: 'center',
+    width:320,
+    borderWidth: 3,
+    borderTopWidth: 2,
+    borderBottomWidth: 2
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
     rowSeperator: {
         borderBottomWidth: 3
     },
@@ -208,12 +257,12 @@ var styles = StyleSheet.create({
         fontSize: 25
         // backgroundColor: '#BBDEFB'
     },
-    block: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        borderWidth: 1,
-        height:40
-    },
+  block: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    borderWidth: 1 / PixelRatio.get(),
+    height:40,
+  },
     blockSeperator: {
         borderRightWidth: 3
     },

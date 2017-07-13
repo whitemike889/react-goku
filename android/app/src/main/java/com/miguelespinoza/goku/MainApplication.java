@@ -3,15 +3,14 @@ package com.miguelespinoza.goku;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.realm.react.RealmReactPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
-import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
-import io.realm.react.RealmReactPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -25,9 +24,8 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-                    new GokuReactPackage(),
-                    new ReactMaterialKitPackage(),
-                    new RealmReactPackage()
+                    new RealmReactPackage(),
+                    new GokuReactPackage()
             );
         }
     };

@@ -3,7 +3,8 @@
  * https://github.com/facebook/react-native
  */
 'use strict';
-import React, {
+import React from 'react';
+import {
   AppRegistry,
   Component,
   StyleSheet,

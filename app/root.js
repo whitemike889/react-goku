@@ -1,6 +1,6 @@
 'use strict';
-
-import React, {
+import React from 'react';
+import {
     StyleSheet,
     StatusBar,
     View,
@@ -80,31 +80,31 @@ var Root = React.createClass({
             <StatusBar
                 backgroundColor="#C2185B"
             />
-            <ToolbarAndroid
-                title="Go-ku"
-                style={styles.toolbar}
-                actions={toolbarActions}
-                onActionSelected={this._onActionSelected}
-                titleColor="#FFFFFF"
-            />
+            {/*<ToolbarAndroid*/}
+                {/*title="Go-ku"*/}
+                {/*style={styles.toolbar}*/}
+                {/*actions={toolbarActions}*/}
+                {/*onActionSelected={this._onActionSelected}*/}
+                {/*titleColor="#FFFFFF"*/}
+            {/*/>*/}
 
-          <ScrollableTabView
-            ref={'tab'}
-            tabBarBackgroundColor='#E91E63'
-            tabBarActiveTextColor='#FFFFFF'
-            tabBarInactiveTextColor='#212121'
-            tabBarUnderlineColor='#FFFFFF'
-          >
+          {/*<ScrollableTabView*/}
+            {/*ref={'tab'}*/}
+            {/*tabBarBackgroundColor='#E91E63'*/}
+            {/*tabBarActiveTextColor='#FFFFFF'*/}
+            {/*tabBarInactiveTextColor='#212121'*/}
+            {/*tabBarUnderlineColor='#FFFFFF'*/}
+          {/*>*/}
             <SolvePage
                 ref={'solvePage'}
                 tabLabel="SOLVE"
             />
-            <SavedPage
-                ref={'savedPage'}
-                tabLabel="SAVED"
-                onPressItem={this._onItemSelected}
-            />
-          </ScrollableTabView>
+            {/*<SavedPage*/}
+                {/*ref={'savedPage'}*/}
+                {/*tabLabel="SAVED"*/}
+                {/*onPressItem={this._onItemSelected}*/}
+            {/*/>*/}
+          {/*</ScrollableTabView>*/}
         </View>
     );
   }
