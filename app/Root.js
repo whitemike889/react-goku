@@ -1,6 +1,13 @@
 'use strict';
 import React, { Component } from 'react';
-import { StatusBar, View, ToolbarAndroid, ToastAndroid } from 'react-native';
+import {
+  StatusBar,
+  View,
+  SegmentedControlIOS,
+  ToolbarAndroid,
+  ToastAndroid,
+  Platform
+} from 'react-native';
 import { IndicatorViewPager, PagerTitleIndicator } from 'rn-viewpager';
 import SolvePage from './pages/SolvePage';
 import SavedPage from './pages/SavedPage';
@@ -14,7 +21,8 @@ export default class Root extends Component {
     this._onItemSelected = this._onItemSelected.bind(this);
 
     this.state = {
-      toggleActions: false
+      toggleActions: false,
+      iOSSelectedPage: 0
     };
   }
 
@@ -70,17 +78,24 @@ export default class Root extends Component {
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor="#C2185B" />
-        <ToolbarAndroid
-          title="Go-ku"
-          style={styles.toolbar}
-          actions={toolbarActions}
-          onActionSelected={this._onActionSelected}
-          titleColor="#FFFFFF"
-        />
-        <IndicatorViewPager
+    const mainWithTabs = Platform.OS === 'ios'
+      ? <View style={{ flex: 1 }}>
+          <SegmentedControlIOS
+            style={styles.segmentedControl}
+            values={['Solve', 'Saved']}
+            selectedIndex={this.state.iOSSelectedPage}
+            tintColor="#E91E63"
+            onChange={event => {
+              this.setState({
+                iOSSelectedPage: event.nativeEvent.selectedSegmentIndex
+              });
+            }}
+          />
+          {this.state.iOSSelectedPage == 0 && <SolvePage ref={'solvePage'} />}
+          {this.state.iOSSelectedPage == 1 &&
+            <SavedPage ref={'savedPage'} onPressItem={this._onItemSelected} />}
+        </View>
+      : <IndicatorViewPager
           ref={'tab'}
           style={{ flex: 1, flexDirection: 'column-reverse' }}
           indicator={this._renderTitleIndicator()}>
@@ -90,7 +105,19 @@ export default class Root extends Component {
           <View style={{ flex: 1 }}>
             <SavedPage ref={'savedPage'} onPressItem={this._onItemSelected} />
           </View>
-        </IndicatorViewPager>
+        </IndicatorViewPager>;
+
+    return (
+      <View style={styles.container}>
+        <StatusBar backgroundColor="#C2185B" barStyle="light-content" />
+        <ToolbarAndroid
+          title="Go-ku"
+          style={styles.toolbar}
+          actions={toolbarActions}
+          onActionSelected={this._onActionSelected}
+          titleColor="#FFFFFF"
+        />
+        {mainWithTabs}
       </View>
     );
   }

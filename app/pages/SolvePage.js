@@ -61,6 +61,11 @@ export default class SolvePage extends Component {
                 keyboardType={'numeric'}
                 maxLength={1}
                 underlineColorAndroid="transparent"
+                value={
+                  this.state.puzzleBoard[rows.length][blocks.length]
+                    ? this.state.puzzleBoard[rows.length][blocks.length]
+                    : ''
+                }
                 style={[
                   styles.textInput,
                   this.state.active && styles.textInputSelected
@@ -69,11 +74,8 @@ export default class SolvePage extends Component {
                   this.setState({
                     active: true
                   })}
-                onChangeText={input => this._onInput(key, input)}>
-                {this.state.puzzleBoard[rows.length][blocks.length]
-                  ? this.state.puzzleBoard[rows.length][blocks.length]
-                  : ''}
-              </TextInput>
+                onChangeText={input => this._onInput(key, input)}
+              />
             </View>
           );
         } else {

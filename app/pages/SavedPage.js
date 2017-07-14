@@ -24,8 +24,8 @@ export default class SavedPage extends Component {
     return (
       <View style={styles.parent}>
         <ScrollView>
-
           <ListView
+            enableEmptySections
             style={styles.listview}
             dataSource={this.state.dataSource}
             renderRow={this._renderRow}

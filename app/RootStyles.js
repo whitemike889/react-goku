@@ -4,6 +4,10 @@ export default StyleSheet.create({
   container: {
     flex: 1
   },
+  segmentedControl: {
+    width: 200,
+    alignSelf: 'center'
+  },
   toolbar: {
     backgroundColor: '#E91E63',
     height: 56
