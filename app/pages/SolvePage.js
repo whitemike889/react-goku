@@ -13,7 +13,7 @@ import {
 import SudokuSolver from '../native/SolverAndroid';
 import util from '../utils/util';
 import GokuDB from '../db/GokuDB';
-
+import styles from './SolveStyles';
 const _ = require('lodash');
 
 export default class SolvePage extends Component {
@@ -33,9 +33,9 @@ export default class SolvePage extends Component {
     this.setState({
       cleared: false
     });
-    var gridpoint = key.split('_');
-    var x = gridpoint[0];
-    var y = gridpoint[1];
+    const gridpoint = key.split('_');
+    const x = gridpoint[0];
+    const y = gridpoint[1];
 
     this.state.puzzleBoard[x][y] = parseInt(input);
   }
@@ -46,13 +46,11 @@ export default class SolvePage extends Component {
     let puzzle = _.chunk(this.state.initPuzzle, 9);
 
     puzzle.map(row => {
-      const rowSeperator = rows.length == 2 || rows.length == 5 ? true : false;
+      const rowSeperator = rows.length === 2 || rows.length === 5;
 
       row.map(block => {
         const key = rows.length + '_' + blocks.length;
-        const blockSeperator = blocks.length == 2 || blocks.length == 5
-          ? true
-          : false;
+        const blockSeperator = blocks.length === 2 || blocks.length === 5;
         if (block === null) {
           blocks.push(
             <View
@@ -187,47 +185,3 @@ export default class SolvePage extends Component {
     saveCallback();
   }
 }
-
-var styles = StyleSheet.create({
-  // For the container View
-  parent: {
-    flex: 1,
-    paddingTop: 16
-  },
-  container: { flexDirection: 'column', alignSelf: 'center', borderWidth: 3 },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  rowSeperator: {
-    borderBottomWidth: 3
-  },
-  textInput: {
-    paddingBottom: 2,
-    paddingLeft: 10,
-    height: 40,
-    fontSize: 25,
-    backgroundColor: '#E3F2FD'
-  },
-  textInputSelected: {
-    paddingBottom: 2,
-    paddingLeft: 10,
-    height: 40,
-    fontSize: 25
-    // backgroundColor: '#BBDEFB'
-  },
-  block: {
-    width: 40,
-    height: 40,
-    borderWidth: 1 / PixelRatio.get()
-  },
-  blockSeperator: {
-    borderRightWidth: 3
-  },
-  blockText: {
-    fontSize: 25,
-    paddingTop: 4,
-    alignSelf: 'center'
-  }
-});

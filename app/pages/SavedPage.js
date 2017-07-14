@@ -1,19 +1,11 @@
 'use strict';
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  PixelRatio,
-  ScrollView,
-  TouchableOpacity,
-  View,
-  Text
-} from 'react-native';
+import { ScrollView, TouchableOpacity, View, Text } from 'react-native';
 
 import { ListView } from 'realm/react-native';
 import GokuDB from '../db/GokuDB';
-
-var _ = require('lodash');
+import styles from './SavedStyles';
+const _ = require('lodash');
 
 export default class SavedPage extends Component {
   constructor(props) {
@@ -21,7 +13,7 @@ export default class SavedPage extends Component {
 
     this._renderRow = this._renderRow.bind(this);
 
-    var ds = new ListView.DataSource({
+    let ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1.solved !== r2.solved
     });
     this.state = {
@@ -72,30 +64,27 @@ export default class SavedPage extends Component {
 
 class BoardItem extends Component {
   render() {
-    var board = this.props.item;
+    let board = this.props.item;
 
-    var rows = [];
-    var blocks = [];
-    var puzzle = _.chunk([...board.solved], 9);
-    var userInserts = board.presolved.split(',');
+    let rows = [];
+    let blocks = [];
+    let puzzle = _.chunk([...board.solved], 9);
+    let userInserts = board.presolved.split(',');
 
     puzzle.map(row => {
-      var rowSeperator = rows.length == 2 || rows.length == 5 ? true : false;
+      const rowSeperator = rows.length === 2 || rows.length === 5;
 
       row.map(block => {
-        var key = rows.length + '_' + blocks.length;
+        const key = rows.length + '_' + blocks.length;
+        const blockSeperator = blocks.length === 2 || blocks.length === 5;
 
-        var isUserInsert = false;
+        let isUserInsert = false;
         userInserts.map(insertKey => {
           if (insertKey == key) {
             isUserInsert = true;
           }
         });
-        var blockSeperator = blocks.length == 2 || blocks.length == 5
-          ? true
-          : false;
 
-        // console.log("block not null");
         blocks.push(
           <View
             key={key}
@@ -128,72 +117,3 @@ class BoardItem extends Component {
     );
   }
 }
-
-var styles = StyleSheet.create({
-  // For the container View
-  parent: {
-    flex: 1,
-    padding: 0
-  },
-  listview: {},
-  itemRow: {
-    flexDirection: 'row',
-    paddingLeft: 16,
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  itemRowID: {
-    color: 'white',
-    fontSize: 32,
-    fontWeight: 'bold',
-    flexDirection: 'row',
-    textAlign: 'center'
-  },
-  circle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#03A9F4',
-    marginTop: 32
-  },
-  boardContent: {
-    flex: 1,
-    paddingLeft: 32
-  },
-  boardContainer: {
-    flex: 1,
-    width: 200,
-    borderWidth: 3,
-    borderTopWidth: 2,
-    borderBottomWidth: 2
-  },
-  boardRow: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  boardRowSeperator: {
-    borderBottomWidth: 3
-  },
-  boardBlock: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    borderWidth: 1 / PixelRatio.get(),
-    height: 20
-  },
-  boardBlockSelected: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    borderWidth: 1 / PixelRatio.get(),
-    height: 20,
-    backgroundColor: '#81D4FA'
-  },
-  boardBlockSeperator: {
-    borderRightWidth: 2
-  },
-  boardBlockText: {
-    fontSize: 10,
-    paddingTop: 8,
-    alignSelf: 'center'
-  }
-});
