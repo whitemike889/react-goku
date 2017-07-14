@@ -11,7 +11,7 @@ import SolvePage from './pages/SolvePage';
 import SavedPage from './pages/SavedPage';
 
 var ToolbarAndroid = require('ToolbarAndroid');
-var ScrollableTabView = require('react-native-scrollable-tab-view');
+import {IndicatorViewPager, PagerTitleIndicator,} from 'rn-viewpager';
 
 var Root = React.createClass({
     getInitialState() {
@@ -22,19 +22,26 @@ var Root = React.createClass({
 
     _onActionSelected(position) {
         if (position === 0) {   // Solve
-            console.log("solving puzzle with Go");
             this._onSolve();
         } else if (position === 1) {    // Delete
-            console.log("cleaning up board");
             this._onDelete();
         } else if (position === 2) {
-            console.log("saving board");
             this._onSave();
         }
     },
 
-    _onSolve() {
-        this.refs.solvePage.convertPuzzle();   // will processPuzzle
+  _renderTitleIndicator() {
+    return <PagerTitleIndicator
+      style={styles.indicatorContainer}
+      itemTextStyle={styles.indicatorText}
+      selectedItemTextStyle={styles.indicatorSelectedText}
+      selectedBorderStyle={styles.selectedBorderStyle}
+      titles={['SOLVE', 'SAVED']} />;
+  },
+
+
+  _onSolve() {
+        this.refs.solvePage.convertPuzzle();
     },
 
     _onDelete() {
@@ -62,7 +69,7 @@ var Root = React.createClass({
     },
 
     _onItemSelected(board, id) {
-        this.refs.tab.goToPage(0);
+        this.refs.tab.setPage(0);
         console.log("loading puzzle: ");
         this.refs.solvePage.loadPuzzle(board);
     },
@@ -79,33 +86,29 @@ var Root = React.createClass({
     return (
         <View style={styles.container}>
             <StatusBar
-                backgroundColor="#C2185B"
-            />
+                backgroundColor="#C2185B" />
             <ToolbarAndroid
                 title="Go-ku"
                 style={styles.toolbar}
                 actions={toolbarActions}
                 onActionSelected={this._onActionSelected}
-                titleColor="#FFFFFF"
-            />
-
-          <ScrollableTabView
+                titleColor="#FFFFFF" />
+          <IndicatorViewPager
             ref={'tab'}
-            tabBarBackgroundColor='#E91E63'
-            tabBarActiveTextColor='#FFFFFF'
-            tabBarInactiveTextColor='#212121'
-            tabBarUnderlineColor='#FFFFFF'
-          >
-            <SolvePage
-                ref={'solvePage'}
-                tabLabel="SOLVE"
-            />
-            <SavedPage
-                ref={'savedPage'}
-                tabLabel="SAVED"
-                onPressItem={this._onItemSelected}
-            />
-          </ScrollableTabView>
+            style={{flex: 1, flexDirection: 'column-reverse'}}
+            indicator={this._renderTitleIndicator()} >
+            <View style={{flex: 1}}>
+              <SolvePage
+                  ref={'solvePage'}
+                  tabLabel="SOLVE" />
+            </View>
+            <View style={{flex: 1}}>
+              <SavedPage
+                  ref={'savedPage'}
+                  tabLabel="SAVED"
+                  onPressItem={this._onItemSelected} />
+            </View>
+          </IndicatorViewPager>
         </View>
     );
   }
@@ -126,6 +129,23 @@ const styles = StyleSheet.create({
   toolbar: {
       backgroundColor: '#E91E63',
       height: 56
+  },
+  indicatorContainer: {
+    backgroundColor: '#E91E63',
+    height: 48,
+  },
+  indicatorText: {
+    fontSize: 16,
+    color: 'white'
+  },
+  indicatorSelectedText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+  selectedBorderStyle: {
+    height: 3,
+    backgroundColor: 'white'
   }
 });
 

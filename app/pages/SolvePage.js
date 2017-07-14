@@ -14,20 +14,16 @@ import SudokuSolver from '../native/SolverAndroid'
 import util from '../utils/util'
 import GokuDB from '../db/GokuDB'
 
-var _ = require('lodash');
+const _ = require('lodash');
 
 var SolvePage = React.createClass({
 	getInitialState() {
         return {
             initPuzzle: util.makeArray(81, null),
-
-            // puzzleBoard: contains solved state
-            // reacts to blocks in sudoku grid based on [row][block].length
-            puzzleBoard: util.makeGrid(),
-            presolved: '', // contains presolved state
+            puzzleBoard: util.makeGrid(), // [row][block]
+            presolved: '',
             solved: false,
             cleared: true,
-          debug: 'Hello World'
         }
     },
 
@@ -40,125 +36,69 @@ var SolvePage = React.createClass({
         var y = gridpoint[1];
 
         this.state.puzzleBoard[x][y] = parseInt(input);
-        console.log("key: " + key + "input: " + input);
       },
 
-    // drawBoard() {
-    //     var rows = [];
-    //     var blocks = [];
-    //     var puzzle = _.chunk(this.state.initPuzzle, 9);
-    //
-    //     console.log('puzzle', puzzle);
-    //   // this.setState({debug: puzzle});
-    //     puzzle.map((row) => {
-    //         var rowSeperator = ((rows.length == 2 || rows.length == 5)) ? true : false;
-    //
-    //
-    //         row.map((block) => {
-    //             var key = rows.length + "_" + blocks.length;
-    //             var blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
-    //
-    //             if (block === null) {
-    //                 blocks.push(
-    //                     <View key={key} style={[styles.block]}>
-    //                           <TextInput
-    //                             clearTextOnFocus={true}
-    //                             keyboardType={'numeric'}
-    //                             maxLength={1}
-    //                             style={[styles.textInput, this.state.active && styles.textInputSelected]}
-    //                             onFocus={() =>
-    //                               this.setState({
-    //                                 active: true
-    //                               })
-    //                             }
-    //                             onChangeText={(input) => this._onInput(key, input)}
-    //                           >
-    //                           {this.state.puzzleBoard[rows.length][blocks.length]}
-    //                           </TextInput>
-    //                     </View>
-    //                 );
-    //             } else {
-    //                 console.log("block not null");
-    //                 blocks.push(
-    //                     <View key={key} style={[styles.block, blockSeperator && styles.blockSeperator]}>
-    //                         <Text style={styles.blockText}>{block}</Text>
-    //                     </View>
-    //                 );
-    //             }
-    //         });
-    //         rows.push(<View key={rows.length} style={[styles.row]}>{blocks}</View>);
-    //         blocks = [];
-    //     });
-    //     console.log('rows', rows);
-    //     return (<View key={rows.length} style={styles.container}>{rows}</View>);
-    // },
-
   drawBoard() {
-        var rows = [];
-        var blocks = [];
-        var puzzle = _.chunk(this.state.initPuzzle, 9);
+    let rows = [];
+    let blocks = [];
+    let puzzle = _.chunk(this.state.initPuzzle, 9);
 
-        console.log('puzzle', puzzle);
+      puzzle.map((row) => {
+        const rowSeperator = ((rows.length == 2 || rows.length == 5)) ? true : false;
 
-        puzzle.map((row) => {
-            row.map((block) => {
-              const key = rows.length + "_" + blocks.length;
-              const blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
-              if (block === null) {
-                const blockSep = blockSeperator ? <Text>|</Text> : null;
-                blocks.push(
-                  <View key={key} style={{width: 40, height: 40, borderWidth: 1, borderColor: 'red'}}>
-                    <TextInput
-                      clearTextOnFocus={true}
-                      keyboardType={'numeric'}
-                      maxLength={1}
-                      underlineColorAndroid='transparent'
-                      style={[styles.textInput, this.state.active && styles.textInputSelected]}
-                      onFocus={() =>
-                        this.setState({
-                          active: true
-                        })
-                      }
-                      onChangeText={(input) => this._onInput(key, input)}
-                    >
-                      {this.state.puzzleBoard[rows.length][blocks.length]}
-                    </TextInput>
-                  </View>
-                );
-              } else {
-                console.log("block not null");
-                blocks.push(
-                  <View key={key} style={[styles.block, blockSeperator && styles.blockSeperator]}>
-                    <Text style={styles.blockText}>{block}</Text>
-                  </View>
-                );
-              }
-            });
+          row.map((block) => {
+            const key = rows.length + "_" + blocks.length;
+            const blockSeperator = ((blocks.length == 2 || blocks.length == 5)) ? true : false;
+            if (block === null) {
+              blocks.push(
+                <View key={key} style={[styles.block, blockSeperator && styles.blockSeperator]}>
+                  <TextInput
+                    clearTextOnFocus={true}
+                    keyboardType={'numeric'}
+                    maxLength={1}
+                    underlineColorAndroid='transparent'
+                    style={[styles.textInput, this.state.active && styles.textInputSelected]}
+                    onFocus={() =>
+                      this.setState({
+                        active: true
+                      })
+                    }
+                    onChangeText={(input) => this._onInput(key, input)}
+                  >
+                    {this.state.puzzleBoard[rows.length][blocks.length]}
+                  </TextInput>
+                </View>
+              );
+            } else {
+              blocks.push(
+                <View key={key} style={[styles.block, blockSeperator && styles.blockSeperator]}>
+                  <Text style={styles.blockText}>{block}</Text>
+                </View>
+              );
+            }
+          });
 
-            rows.push(<View key={rows.length} style={{flexDirection: 'row', borderWidth: 2, borderColor: 'green'}}>{blocks}</View>);
-            blocks = [];
-        });
+          rows.push(<View key={rows.length} style={[{flexDirection: 'row'}, rowSeperator && styles.rowSeperator]}>{blocks}</View>);
+          blocks = [];
+      });
 
-        return <View style={{flexDirection: 'column', alignSelf: 'center'}}>{rows}</View>;
+      return <View style={styles.container}>{rows}</View>;
   },
 
     render() {
-        var layout =
-            <View style = {styles.parent} >
-              <Text>
-              </Text>
-              {this.drawBoard()}
-            </View>
-        ;
-
-        return layout;
+        return (
+          <View style = {styles.parent} >
+            <Text>
+            </Text>
+            {this.drawBoard()}
+          </View>
+        );
     },
 
     // convertPuzzle: converts puzzleBoard to a format that the Go lib (Goku) understands
     convertPuzzle() {
         var newPuzzle = util.convertPuzzle(_.flatten(this.state.puzzleBoard));
 
-        console.log("newPuzzle: " + newPuzzle);
         this.processPuzzle(newPuzzle);
     },
 
@@ -171,7 +111,6 @@ var SolvePage = React.createClass({
     },
 
     processPuzzle: async function(puzzle) {
-        console.log("processing puzzle!");
 
         // } = await SudokuSolver.solve("4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......");
         try {
@@ -179,11 +118,10 @@ var SolvePage = React.createClass({
                 result,
             } = await SudokuSolver.solve(puzzle);
 
-            console.log("result ready!");
             console.log(result);
             console.log([...result]);
 
-            var presolved = util.extractPuzzleInserts(this.state.puzzleBoard)
+            var presolved = util.extractPuzzleInserts(this.state.puzzleBoard);
             this.setState({ // array of all keys
                 presolved: presolved
             });
@@ -194,7 +132,7 @@ var SolvePage = React.createClass({
                 puzzleBoard: newBoard
             });
         } catch (e) {
-            console.error(e);
+            // console.error(e);
             ToastAndroid.show('Puzzle is unsolvable.', ToastAndroid.SHORT);
         }
     },
@@ -221,7 +159,7 @@ var SolvePage = React.createClass({
             solved: false
         });
 
-        console.log("SolvePage saving puzzle");
+        console.log("saving puzzle");
         GokuDB.saveBoard(this.state.presolved, util.convertPuzzle(_.flatten(this.state.puzzleBoard)));
         saveCallback();
     }
@@ -231,17 +169,9 @@ var styles = StyleSheet.create({
     // For the container View
     parent: {
       flex: 1,
-      borderWidth: 1,
-      borderColor: 'red',
         paddingTop:16
     },
-  container: {
-    alignSelf: 'center',
-    width:320,
-    borderWidth: 3,
-    borderTopWidth: 2,
-    borderBottomWidth: 2
-  },
+  container: {flexDirection: 'column', alignSelf: 'center', borderWidth: 3},
   row: {
     flex: 1,
     flexDirection: 'row',
@@ -265,10 +195,9 @@ var styles = StyleSheet.create({
         // backgroundColor: '#BBDEFB'
     },
   block: {
-    flex: 1,
-    justifyContent: 'flex-start',
+      width: 40,
+    height: 40,
     borderWidth: 1 / PixelRatio.get(),
-    height:40,
   },
     blockSeperator: {
         borderRightWidth: 3
