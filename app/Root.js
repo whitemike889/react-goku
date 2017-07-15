@@ -9,9 +9,13 @@ import {
   Platform
 } from 'react-native';
 import { IndicatorViewPager, PagerTitleIndicator } from 'rn-viewpager';
+import GokuToolbar from './components/GokuToolbar';
 import SolvePage from './pages/SolvePage';
 import SavedPage from './pages/SavedPage';
 import styles from './RootStyles';
+
+const easyBoard =
+  ' 73  9 165   6       7 25 8  6 18  3  52 68  4  59 2  9 76 5       4   585 3  67 ';
 
 export default class Root extends Component {
   constructor(props) {
@@ -33,6 +37,8 @@ export default class Root extends Component {
       this._onDelete();
     } else if (position === 2) {
       this._onSave();
+    } else if (position === 3) {
+      this._onPreload();
     }
   }
 
@@ -59,17 +65,24 @@ export default class Root extends Component {
   _onSave() {
     if (this.refs.solvePage.isSolved()) {
       this.refs.solvePage.savePuzzle(() => {
-        this.refs.savedPage.updateDataSource();
-        ToastAndroid.show('Saved puzzle.', ToastAndroid.SHORT);
+        this.refs.savedPage && this.refs.savedPage.updateDataSource();
+        Platform.OS != 'ios' &&
+          ToastAndroid.show('Saved puzzle.', ToastAndroid.SHORT);
       });
       return;
     }
     if (this.refs.solvePage.isCleared()) {
-      ToastAndroid.show('Puzzle is not complete.', ToastAndroid.SHORT);
+      Platform.OS != 'ios' &&
+        ToastAndroid.show('Puzzle is not complete.', ToastAndroid.SHORT);
       return;
     }
 
-    ToastAndroid.show('Must solve puzzle before saving.', ToastAndroid.SHORT);
+    Platform.OS != 'ios' &&
+      ToastAndroid.show('Must solve puzzle before saving.', ToastAndroid.SHORT);
+  }
+
+  _onPreload() {
+    this.refs.solvePage.preloadBoard(easyBoard);
   }
 
   _onItemSelected(board, id) {
@@ -110,33 +123,9 @@ export default class Root extends Component {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#C2185B" barStyle="light-content" />
-        <ToolbarAndroid
-          title="Go-ku"
-          style={styles.toolbar}
-          actions={toolbarActions}
-          onActionSelected={this._onActionSelected}
-          titleColor="#FFFFFF"
-        />
+        <GokuToolbar actionsSelected={this._onActionSelected} />
         {mainWithTabs}
       </View>
     );
   }
 }
-
-const toolbarActions = [
-  {
-    title: 'Solve',
-    icon: require('./assets/solve_icon.png'),
-    show: 'always'
-  },
-  {
-    title: 'Delete',
-    icon: require('./assets/delete_icon.png'),
-    show: 'always'
-  },
-  {
-    title: 'Save',
-    icon: require('./assets/save_icon.png'),
-    show: 'always'
-  }
-];

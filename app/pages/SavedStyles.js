@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from 'react-native';
+import { StyleSheet, PixelRatio, Platform } from 'react-native';
 
 export default StyleSheet.create({
   parent: {
@@ -18,7 +18,8 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     flexDirection: 'row',
     textAlign: 'center',
-    marginTop: 2
+    marginTop: 2,
+    backgroundColor: 'transparent'
   },
   circle: {
     width: 50,
@@ -65,6 +66,8 @@ export default StyleSheet.create({
   boardBlockText: {
     fontSize: 10,
     paddingTop: 8,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: Platform.OS === 'ios' ? -4 : 0,
+    backgroundColor: 'transparent'
   }
 });

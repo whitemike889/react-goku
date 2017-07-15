@@ -8,10 +8,6 @@ export default StyleSheet.create({
     width: 200,
     alignSelf: 'center'
   },
-  toolbar: {
-    backgroundColor: '#E91E63',
-    height: 56
-  },
   indicatorContainer: {
     backgroundColor: '#E91E63',
     height: 48

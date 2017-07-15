@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-import realm from "./realm";
+import realm from './realm';
 
 export const GokuDB = {
   saveBoard: (presolved, solved) => {
-    console.log("saving Board");
+    // console.log('saving Board');
     realm.write(() => {
-      realm.create("Board", {
+      realm.create('Board', {
         presolved: presolved,
         solved: solved
       });
@@ -14,9 +14,8 @@ export const GokuDB = {
   },
 
   getBoards: () => {
-    console.log("gettings all Boards");
-    console.log("gettings all Boards");
-    return realm.objects("Board");
+    // console.log('gettings all Boards');
+    return realm.objects('Board');
   }
 };
 

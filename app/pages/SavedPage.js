@@ -35,12 +35,7 @@ export default class SavedPage extends Component {
     );
   }
 
-  _onBoardClicked(board) {
-    console.log('onBoardClicked: ' + board.solved);
-  }
-
   _renderRow(rowData, sectionID, rowID) {
-    console.log(rowData);
     const { onPressItem } = this.props;
     return (
       <View style={styles.itemRow}>

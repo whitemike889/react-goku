@@ -21,26 +21,30 @@ export default StyleSheet.create({
   textInput: {
     paddingBottom: 2,
     paddingLeft: 10,
-    height: 40,
+    height: 34,
     fontSize: 25,
     backgroundColor: '#E3F2FD'
   },
   textInputSelected: {
     paddingBottom: 2,
     paddingLeft: 10,
-    height: 40,
+    height: 34,
     fontSize: 25
   },
   block: {
-    width: 40,
-    height: 40,
+    width: 34,
+    height: 34,
     borderWidth: 1 / PixelRatio.get()
   },
   blockSeperator: {
     borderRightWidth: 3
   },
+  blockSelected: {
+    backgroundColor: '#03A9F4',
+    opacity: 0.7
+  },
   blockText: {
-    fontSize: 25,
+    fontSize: 18,
     paddingTop: 4,
     alignSelf: 'center'
   }

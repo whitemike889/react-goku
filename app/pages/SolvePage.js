@@ -4,13 +4,17 @@ import {
   AppRegistry,
   StyleSheet,
   PixelRatio,
+  TouchableOpacity,
   View,
   Text,
   TextInput,
-  ToastAndroid
+  ToastAndroid,
+  Platform
 } from 'react-native';
 
 import SudokuSolver from '../native/SolverAndroid';
+import JSSudokuSolver from 'sudoku-solver';
+import NumPad from '../components/NumPad';
 import util from '../utils/util';
 import GokuDB from '../db/GokuDB';
 import styles from './SolveStyles';
@@ -20,12 +24,16 @@ export default class SolvePage extends Component {
   constructor(props) {
     super(props);
 
+    this.numPadPressed = this.numPadPressed.bind(this);
+    this.newBlockSelected = this.newBlockSelected.bind(this);
+
     this.state = {
       initPuzzle: util.makeArray(81, null),
       puzzleBoard: util.makeGrid(), // [row][block]
       presolved: '',
       solved: false,
-      cleared: true
+      cleared: true,
+      blockSelected: ''
     };
   }
 
@@ -40,6 +48,14 @@ export default class SolvePage extends Component {
     this.state.puzzleBoard[x][y] = parseInt(input);
   }
 
+  newBlockSelected(blockKey) {
+    if (this.state.blockSelected !== blockKey) {
+      this.setState({ blockSelected: blockKey });
+    } else {
+      this.setState({ blockSelected: '' });
+    }
+  }
+
   drawBoard() {
     let rows = [];
     let blocks = [];
@@ -50,33 +66,48 @@ export default class SolvePage extends Component {
 
       row.map(block => {
         const key = rows.length + '_' + blocks.length;
+        const isBlockSelected = this.state.blockSelected == key;
         const blockSeperator = blocks.length === 2 || blocks.length === 5;
         if (block === null) {
           blocks.push(
-            <View
+            <TouchableOpacity
               key={key}
+              onPress={() => this.newBlockSelected(key)}
               style={[styles.block, blockSeperator && styles.blockSeperator]}>
-              <TextInput
-                clearTextOnFocus={true}
-                keyboardType={'numeric'}
-                maxLength={1}
-                underlineColorAndroid="transparent"
-                value={
-                  this.state.puzzleBoard[rows.length][blocks.length]
-                    ? this.state.puzzleBoard[rows.length][blocks.length]
-                    : ''
-                }
+              <Text
                 style={[
                   styles.textInput,
-                  this.state.active && styles.textInputSelected
-                ]}
-                onFocus={() =>
-                  this.setState({
-                    active: true
-                  })}
-                onChangeText={input => this._onInput(key, input)}
-              />
-            </View>
+                  isBlockSelected && styles.blockSelected
+                ]}>
+                {this.state.puzzleBoard[rows.length][blocks.length]
+                  ? this.state.puzzleBoard[rows.length][
+                      blocks.length
+                    ].toString()
+                  : ''}
+              </Text>
+              {/*<TextInput*/}
+              {/*clearTextOnFocus={true}*/}
+              {/*keyboardType={'numeric'}*/}
+              {/*maxLength={1}*/}
+              {/*underlineColorAndroid="transparent"*/}
+              {/*value={*/}
+              {/*this.state.puzzleBoard[rows.length][blocks.length]*/}
+              {/*? this.state.puzzleBoard[rows.length][*/}
+              {/*blocks.length*/}
+              {/*].toString()*/}
+              {/*: ''*/}
+              {/*}*/}
+              {/*style={[*/}
+              {/*styles.textInput,*/}
+              {/*this.state.active && styles.textInputSelected*/}
+              {/*]}*/}
+              {/*onFocus={() =>*/}
+              {/*this.setState({*/}
+              {/*active: true*/}
+              {/*})}*/}
+              {/*onChangeText={input => this._onInput(key, input)}*/}
+              {/*/>*/}
+            </TouchableOpacity>
           );
         } else {
           blocks.push(
@@ -105,11 +136,18 @@ export default class SolvePage extends Component {
     return <View style={styles.container}>{rows}</View>;
   }
 
+  numPadPressed(val) {
+    const { blockSelected } = this.state;
+
+    blockSelected != '' && this._onInput(blockSelected, val);
+  }
+
   render() {
     return (
       <View style={styles.parent}>
         <Text />
         {this.drawBoard()}
+        <NumPad keyPressed={this.numPadPressed} />
       </View>
     );
   }
@@ -118,7 +156,11 @@ export default class SolvePage extends Component {
   convertPuzzle() {
     var newPuzzle = util.convertPuzzle(_.flatten(this.state.puzzleBoard));
 
-    this.processPuzzle(newPuzzle);
+    if (Platform.OS == 'ios') {
+      this.processPuzzleInJS(newPuzzle);
+    } else {
+      this.processPuzzle(newPuzzle);
+    }
   }
 
   isSolved() {
@@ -129,13 +171,44 @@ export default class SolvePage extends Component {
     return this.state.cleared;
   }
 
+  preloadBoard(puzzle) {
+    var newBoard = util.convertToGrid(_.chunk([...puzzle], 9));
+    this.setState({
+      solved: false,
+      puzzleBoard: newBoard
+    });
+  }
+
+  processPuzzleInJS = async function(puzzle) {
+    try {
+      const result = await JSSudokuSolver.solve({ problem: puzzle }).toString(
+        false
+      );
+
+      var presolved = util.extractPuzzleInserts(this.state.puzzleBoard);
+      this.setState({
+        // array of all keys
+        presolved: presolved
+      });
+
+      var newBoard = util.convertToGrid(_.chunk([...result], 9));
+      this.setState({
+        solved: true,
+        puzzleBoard: newBoard
+      });
+    } catch (e) {
+      console.log('what is the error', e);
+    }
+  };
+
   processPuzzle = async function(puzzle) {
     // } = await SudokuSolver.solve("4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......");
     try {
       var { result } = await SudokuSolver.solve(puzzle);
 
-      console.log(result);
-      console.log([...result]);
+      if (result == undefined) {
+        throw 'result is undefined';
+      }
 
       var presolved = util.extractPuzzleInserts(this.state.puzzleBoard);
       this.setState({
@@ -150,7 +223,8 @@ export default class SolvePage extends Component {
       });
     } catch (e) {
       // console.error(e);
-      ToastAndroid.show('Puzzle is unsolvable.', ToastAndroid.SHORT);
+      Platform.OS !== 'ios' &&
+        ToastAndroid.show('Puzzle is unsolvable.', ToastAndroid.SHORT);
     }
   };
 
@@ -179,7 +253,6 @@ export default class SolvePage extends Component {
       solved: false
     });
 
-    console.log('saving puzzle');
     GokuDB.saveBoard(
       this.state.presolved,
       util.convertPuzzle(_.flatten(this.state.puzzleBoard))
