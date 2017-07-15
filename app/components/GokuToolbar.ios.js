@@ -1,5 +1,5 @@
 'use strict';
-import React from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,10 +10,10 @@ import {
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-var GokuToolbar = React.createClass({
+export default class GokuToolbar extends Component {
   propTypes: {
     actionsSelected: React.PropTypes.func
-  },
+  };
 
   openActionSheet() {
     const { actionsSelected } = this.props;
@@ -25,7 +25,7 @@ var GokuToolbar = React.createClass({
     ActionSheetIOS.showActionSheetWithOptions(options, option => {
       actionsSelected(option);
     });
-  },
+  }
 
   render() {
     return (
@@ -44,7 +44,7 @@ var GokuToolbar = React.createClass({
             </Text>
             <TouchableOpacity
               style={styles.options}
-              onPress={this.openActionSheet}>
+              onPress={this.openActionSheet.bind(this)}>
               <Icon
                 name="ios-more"
                 size={30}
@@ -59,7 +59,7 @@ var GokuToolbar = React.createClass({
       </View>
     );
   }
-});
+}
 
 const styles = StyleSheet.create({
   toolbar: {
@@ -80,5 +80,3 @@ const styles = StyleSheet.create({
     right: 8
   }
 });
-
-module.exports = GokuToolbar;

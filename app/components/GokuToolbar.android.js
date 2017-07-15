@@ -1,22 +1,13 @@
 'use strict';
-import React from 'react';
-import {
-  StyleSheet,
-  Button,
-  Text,
-  TouchableOpacity,
-  View,
-  Platform,
-  ToolbarAndroid,
-  ActionSheetIOS
-} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-var GokuToolbar = React.createClass({
+export default class GokuToolbar extends Component {
   propTypes: {
     actionsSelected: React.PropTypes.func
-  },
+  };
 
   render() {
     const { actionsSelected } = this.props;
@@ -33,7 +24,7 @@ var GokuToolbar = React.createClass({
       </View>
     );
   }
-});
+}
 
 const toolbarActions = [
   {
@@ -71,5 +62,3 @@ const styles = StyleSheet.create({
     right: 8
   }
 });
-
-module.exports = GokuToolbar;
