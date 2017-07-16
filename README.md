@@ -13,23 +13,10 @@ Curious about an Architecture to rule all mobile platforms! using **React Native
 * **Logic Layer:** [Go mobile](https://godoc.org/golang.org/x/mobile/cmd/gomobile) using [goku lib](https://github.com/miguelespinoza/goku)
 * **Persistence Layer** [Realm DB](https://realm.io/docs/react-native/latest/)
 
-## Screenshots
-
-### **Logic:** Using Golang to solve Sudoku Board
-![Go-ku Insert](https://cloud.githubusercontent.com/assets/6182543/13706010/5b7ca2ea-e771-11e5-81fd-b2f830e03d20.png)
-![Go-ku Solved](https://cloud.githubusercontent.com/assets/6182543/13706012/5b7d6fa4-e771-11e5-8bce-1295b23a163e.png)
-
-### **Persistence:** Using Realm DB to save boards to a ListView
-![Go-ku SavedOne](https://cloud.githubusercontent.com/assets/6182543/13706011/5b7cbfaa-e771-11e5-88c4-43c6152db7da.png)
-![Go-ku SavedTwo](https://cloud.githubusercontent.com/assets/6182543/13706009/5b7c6690-e771-11e5-834e-b83278454d57.png)
-
-### Can go back to a previously saved board
-![Go-ku Selected](https://cloud.githubusercontent.com/assets/6182543/13706013/5b7f7c36-e771-11e5-968e-acc0099aad00.png)
-![Go-ku Loaded](https://cloud.githubusercontent.com/assets/6182543/13706267/69b133a2-e772-11e5-950e-e270b6de4a8c.png)
+![Go-ku Android and iOS](https://user-images.githubusercontent.com/6182543/28248035-71e15310-6a0a-11e7-8538-b5946a9f071d.png)
 
 ## Development Tips:
-As of now only works for Android, have not tested on iOS
-* any one happy to contribute and build for iOS, I'm happy to receive Pull Request! :)
+Android and iOS Builds. Currently there's not a native module for the Go sdk.
 
 ### Run from source:
 Dependencies: [react-native for android](https://facebook.github.io/react-native/docs/getting-started.html#content)
@@ -61,10 +48,9 @@ Using Go package:
 5. Profit! use that function wherever you want!
 
 ## TODO:
-* input from buttons, not OS keyboard
-* deleting sudoku boards
-* updating sudoku boards, need to introduce primaryKey
-* refactor to idiomatic react code : sorry came from Java and Go
-* Realm Results should "auto-update" the list? or is it only "auto-updated" if it is already in the list? so adding new models I have to manually update the list again?
-* Learn some integration testing for React Native
-* (∩｀-´)⊃━☆ﾟ.*･｡ﾟ Animations! oooooooh!!!!
+- [x] input from buttons, not OS keyboard
+- [x] updating sudoku boards, need to introduce primaryKey
+- [x] refactor to idiomatic react code : sorry came from Java and Go
+- [ ] deleting sudoku boards
+- [ ] Learn some integration testing for React Native
+- [ ] (∩｀-´)⊃━☆ﾟ.*･｡ﾟ Animations! oooooooh!!!!
