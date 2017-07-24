@@ -6,11 +6,13 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react-native": "^0.21.0",
-    "react-native-material-design": "^0.3.3",
-    "react-native-material-kit": "^0.3.0",
-    "react-native-scrollable-tab-view": "^0.4.0",
-    "realm": "^0.10.0"
+    "react": "16.0.0-alpha.12",
+    "react-native": "^0.46.2",
+    "react-native-vector-icons": "^4.2.0",
+    "realm": "^1.0.0",
+    "rn-viewpager": "^1.2.3",
+    "sudoku-solver": "0.0.2",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "react-native-cli": "^0.1.10"

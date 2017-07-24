@@ -9,4 +9,4 @@
  * https://godoc.org/golang.org/x/mobile/cmd/gomobile
  */
 import { NativeModules } from 'react-native';
-module.exports = NativeModules.SudokuSolverAndroid;
+export default NativeModules.SudokuSolverAndroid;

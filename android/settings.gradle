@@ -1,8 +1,6 @@
 rootProject.name = 'goku'
+include ':react-native-vector-icons'
+project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
 
-include ':app'
-include ':RNMaterialKit'
-project (':RNMaterialKit').projectDir = file('../node_modules/react-native-material-kit/android')
-// realm dependency
-include ':realm'
+include ':app', ':realm'
 project(':realm').projectDir = new File(rootProject.projectDir, '../node_modules/realm/android')
